@@ -4,6 +4,7 @@ using System.IO;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace GrpcTest.Clients
 {
@@ -27,5 +28,18 @@ namespace GrpcTest.Clients
             services.AddSingleton(x => CreateMicroserviceClient<TClient>(cert, host, port));
             return services;
         }
+
+        public static string TryGetFrameworkDescription()
+        {
+#if NETSTANDARD
+            return RuntimeInformation.FrameworkDescription;
+#else
+            var runtimeInformationClass = Type.GetType("System.Runtime.InteropServices.RuntimeInformation");
+            var frameworkDescriptionProperty = runtimeInformationClass?.GetTypeInfo().GetProperty("FrameworkDescription",
+                BindingFlags.Static | BindingFlags.Public);
+            return frameworkDescriptionProperty?.GetValue(null)?.ToString();
+#endif
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 using Grpc.Core;
+using GrpcTest.Clients;
 using GrpcTest.Translator;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -56,6 +57,13 @@ namespace GrpcTest.Net7WebApi.Controllers
                 else
                     throw;
             }
+        }
+
+        [HttpGet]
+        [Route("Test2")]
+        public async Task<string> Test2()
+        {
+            return MicroservicesClientComposition.TryGetFrameworkDescription();
         }
     }
 }

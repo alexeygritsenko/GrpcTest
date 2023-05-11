@@ -37,5 +37,12 @@ namespace GrpcTest.Net48WebApi.Controllers
                     throw;
             }
         }
+
+        [HttpGet]
+        [Route("api/Test2")]
+        public async Task<string> Test2()
+        {
+            return MicroservicesClientComposition.TryGetFrameworkDescription();
+        }
     }
 }
