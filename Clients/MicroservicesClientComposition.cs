@@ -24,10 +24,7 @@ namespace GrpcTest.Clients
 
         public static IServiceCollection AddMicroserviceClient<TClient>(this IServiceCollection services, string cert, string host, int port) where TClient : class
         {
-            var channel = new Grpc.Core.Channel(host, port, CreateSslCredentials(cert));
-            var invoker = channel.Intercept(m => { m.Add("client-source", Assembly.GetCallingAssembly().GetName().Name); return m; });
-            services.AddSingleton(x => (TClient)Activator.CreateInstance(typeof(TClient), invoker));
-
+            services.AddSingleton(x => CreateMicroserviceClient<TClient>(cert, host, port));
             return services;
         }
     }
