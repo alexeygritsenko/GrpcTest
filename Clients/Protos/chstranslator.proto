@@ -1,0 +1,48 @@
+﻿syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "GrpcTest.Translator";
+
+package grpctesttranslator;
+
+// service definition.
+service GrpcTestTranslator {
+
+  rpc TranslateValues (TranslateValuesRequest) returns (TranslateValuesResponse);
+  rpc TranslateOneValue (TranslateOneValueRequest) returns (TranslateOneValueResponse);
+  rpc GetDictionaries (google.protobuf.Empty) returns (GetDictionariesResponse);
+
+}
+
+message TranslateValuesRequest {
+  repeated TranslateOneValueRequest values = 1;
+}
+
+message TranslateValuesResponse {
+  repeated google.protobuf.StringValue values = 1;
+
+  google.protobuf.StringValue error = 2;
+}
+
+message TranslateOneValueRequest {
+  google.protobuf.StringValue value = 1;
+  google.protobuf.StringValue section = 2;
+}
+
+message TranslateOneValueResponse {
+  google.protobuf.StringValue value = 1;
+  google.protobuf.StringValue error = 2;
+}
+
+message GetDictionariesResponse {
+  map<string, string> fileInheritance = 1;
+  map<string, string> filePermissions = 2;
+  map<string, string> accounts = 3;
+  map<string, string> registryInheritance = 4;
+  map<string, string> registryPermissions = 5;
+  repeated google.protobuf.StringValue builtInUsers = 6;
+
+  google.protobuf.StringValue error = 7;
+}
